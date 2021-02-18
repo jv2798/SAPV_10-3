@@ -1,6 +1,6 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="968,965" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="25">
+    <scg:List x:TypeArguments="x:String" Capacity="34">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -26,10 +26,19 @@
       <x:String>System.Activities.DynamicUpdate</x:String>
       <x:String>System.Reflection</x:String>
       <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>UiPath.Mail</x:String>
+      <x:String>UiPath.Mail.SMTP.Activities</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>UiPath.Database</x:String>
+      <x:String>UiPath.Database.Activities</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Xml.Serialization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="23">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="28">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -53,6 +62,11 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
       <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.Database</AssemblyReference>
+      <AssemblyReference>UiPath.Database.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Flowchart DisplayName="Diagrama de flujo" sap:VirtualizedContainerService.HintSize="724,900" sap2010:WorkflowViewState.IdRef="Flowchart_1">
@@ -64,6 +78,7 @@
         </Variable.Default>
       </Variable>
       <Variable x:TypeArguments="x:String" Name="InformacionArchivoconError" />
+      <Variable x:TypeArguments="x:Int32" Name="count" />
     </Flowchart.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -82,63 +97,57 @@
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <av:Point x:Key="ShapeLocation">180,407</av:Point>
-          <av:Size x:Key="ShapeSize">200,51</av:Size>
-          <av:PointCollection x:Key="ConnectorLocation">280,458 280,488 160,488 160,597 280,597 280,627</av:PointCollection>
+          <av:Size x:Key="ShapeSize">200,66</av:Size>
+          <av:PointCollection x:Key="ConnectorLocation">280,473 280,503 160,503 160,597 280,597 280,627</av:PointCollection>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:CommentOut sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="CommentOut_1">
-        <ui:CommentOut.Body>
-          <Sequence DisplayName="Actividades ignoradas" sap2010:WorkflowViewState.IdRef="Sequence_18">
-            <Sequence DisplayName="Mover archivos" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_3">
-              <Sequence.Variables>
-                <Variable x:TypeArguments="s:String[]" Name="ListaIdocsGenerados" />
-              </Sequence.Variables>
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <ui:Comment DisplayName="Comentario" sap:VirtualizedContainerService.HintSize="462,74" sap2010:WorkflowViewState.IdRef="Comment_1" Text="// se tendra que modificar la ruta de los idocs generados asi como el destino-MD&#xA;&#xA;&#xA;" />
-              <Assign DisplayName="Asigna ruta de los archivos-MD" sap:VirtualizedContainerService.HintSize="462,60" sap2010:WorkflowViewState.IdRef="Assign_1">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="s:String[]">[ListaIdocsGenerados]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles("C:\Extractor\Temporal","*"+DateTime.Today.AddDays(-1).ToString("yyyyMMdd")+"*")]</InArgument>
-                </Assign.Value>
-              </Assign>
-              <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="Mover archivo por archivo" sap:VirtualizedContainerService.HintSize="462,483" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[ListaIdocsGenerados]">
-                <ui:ForEach.Body>
-                  <ActivityAction x:TypeArguments="x:String">
-                    <ActivityAction.Argument>
-                      <DelegateInArgument x:TypeArguments="x:String" Name="item" />
-                    </ActivityAction.Argument>
-                    <Sequence DisplayName="Cuerpo" sap:VirtualizedContainerService.HintSize="426,349" sap2010:WorkflowViewState.IdRef="Sequence_2">
-                      <Sequence.Variables>
-                        <Variable x:TypeArguments="x:String" Name="NombreIdoc" />
-                      </Sequence.Variables>
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                      <Assign DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="384,60" sap2010:WorkflowViewState.IdRef="Assign_2">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:String">[NombreIdoc]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:String">[item.Substring(item.LastIndexOf("\"))]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <ui:MoveFile ContinueOnError="{x:Null}" Destination="[&quot;C:\10.1.1.126\EntradasIdocs&quot;+NombreIdoc]" DisplayName="Mover archivo-MD" sap:VirtualizedContainerService.HintSize="384,157" sap2010:WorkflowViewState.IdRef="MoveFile_1" Overwrite="True" Path="[item]" />
-                    </Sequence>
-                  </ActivityAction>
-                </ui:ForEach.Body>
-              </ui:ForEach>
-            </Sequence>
-          </Sequence>
-        </ui:CommentOut.Body>
-      </ui:CommentOut>
+      <Sequence DisplayName="Mover archivos" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="s:String[]" Name="ListaIdocsGenerados" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:Comment DisplayName="Comentario" sap:VirtualizedContainerService.HintSize="462,74" sap2010:WorkflowViewState.IdRef="Comment_1" Text="// se tendra que modificar la ruta de los idocs generados asi como el destino-MD&#xA;&#xA;&#xA;" />
+        <Assign DisplayName="Asigna ruta de los archivos-MD" sap:VirtualizedContainerService.HintSize="462,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="s:String[]">[ListaIdocsGenerados]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles("C:\Extractor\Temporal","*"+DateTime.Today.AddDays(-1).ToString("yyyyMMdd")+"*")]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="Mover archivo por archivo" sap:VirtualizedContainerService.HintSize="462,483" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[ListaIdocsGenerados]">
+          <ui:ForEach.Body>
+            <ActivityAction x:TypeArguments="x:String">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="x:String" Name="item" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Cuerpo" sap:VirtualizedContainerService.HintSize="426,349" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="x:String" Name="NombreIdoc" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="384,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[NombreIdoc]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[item.Substring(item.LastIndexOf("\"))]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:MoveFile ContinueOnError="{x:Null}" Destination="[&quot;C:\10.1.1.126\EntradasIdocs&quot;+NombreIdoc]" DisplayName="Mover archivo-MD" sap:VirtualizedContainerService.HintSize="384,157" sap2010:WorkflowViewState.IdRef="MoveFile_1" Overwrite="True" Path="[item]" />
+              </Sequence>
+            </ActivityAction>
+          </ui:ForEach.Body>
+        </ui:ForEach>
+      </Sequence>
       <FlowStep.Next>
         <FlowStep x:Name="__ReferenceID0">
           <sap:WorkflowViewStateService.ViewState>
@@ -148,24 +157,20 @@
               <av:PointCollection x:Key="ConnectorLocation">280,693 280,723 330,723 330,756.5</av:PointCollection>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="verificar si se convirtieron correctamente" sap:VirtualizedContainerService.HintSize="1158,2293" sap2010:WorkflowViewState.IdRef="Sequence_9">
+          <Sequence DisplayName="verificar si se convirtieron correctamente" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_9">
             <Sequence.Variables>
               <Variable x:TypeArguments="s:String[]" Name="ListaPais" />
               <Variable x:TypeArguments="x:String" Name="r_error" />
               <Variable x:TypeArguments="x:String" Name="r_respaldo" />
-              <Variable x:TypeArguments="x:String" Name="RespaldosPaisesnoEncontrados">
-                <Variable.Default>
-                  <Literal x:TypeArguments="x:String" Value="" />
-                </Variable.Default>
-              </Variable>
+              <Variable x:TypeArguments="x:String" Name="detallesError" />
             </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:Comment DisplayName="Comentario" sap:VirtualizedContainerService.HintSize="1116,55" sap2010:WorkflowViewState.IdRef="Comment_2" Text="// La ruta se tendra que modificar luego" />
-            <ui:MultipleAssign DisplayName="Asignar ruta de los idocs convertidos-DEV" sap:VirtualizedContainerService.HintSize="1116,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+            <ui:Comment DisplayName="Comentario" sap:VirtualizedContainerService.HintSize="839,55" sap2010:WorkflowViewState.IdRef="Comment_2" Text="// La ruta se tendra que modificar luego" />
+            <ui:MultipleAssign DisplayName="Asignar ruta de los idocs convertidos-DEV" sap:VirtualizedContainerService.HintSize="839,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
               <ui:MultipleAssign.AssignOperations>
                 <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                   <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -201,13 +206,13 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:MultipleAssign>
-            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="recorre cada ruta" sap:VirtualizedContainerService.HintSize="1116,1906" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[ListaPais]">
+            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="recorre cada ruta" sap:VirtualizedContainerService.HintSize="839,1052" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[ListaPais]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="x:String">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="x:String" Name="pais" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Cuerpo" sap:VirtualizedContainerService.HintSize="1080,1772" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                  <Sequence DisplayName="Cuerpo" sap:VirtualizedContainerService.HintSize="803,918" sap2010:WorkflowViewState.IdRef="Sequence_8">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="s:String[]" Name="VerificarError" />
                     </Sequence.Variables>
@@ -216,17 +221,17 @@
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <Sequence DisplayName="Verificas los archivos convertidos correctamente" sap:VirtualizedContainerService.HintSize="1038,66" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                    <Sequence DisplayName="Verificas los archivos convertidos correctamente" sap:VirtualizedContainerService.HintSize="761,720" sap2010:WorkflowViewState.IdRef="Sequence_5">
                       <Sequence.Variables>
                         <Variable x:TypeArguments="s:String[]" Name="VerificarRespaldo" />
                       </Sequence.Variables>
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Assign DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="716,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                      <Assign DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="719,60" sap2010:WorkflowViewState.IdRef="Assign_3">
                         <Assign.To>
                           <OutArgument x:TypeArguments="s:String[]">[VerificarRespaldo]</OutArgument>
                         </Assign.To>
@@ -234,21 +239,21 @@
                           <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles(pais+r_respaldo,DateTime.Today.AddDays(-1).ToString("yyyyMMdd")+"*")]</InArgument>
                         </Assign.Value>
                       </Assign>
-                      <If Condition="[VerificarRespaldo.Count&gt;0]" DisplayName="Si" sap:VirtualizedContainerService.HintSize="716,429" sap2010:WorkflowViewState.IdRef="If_1">
+                      <If Condition="[VerificarRespaldo.Count&gt;0]" DisplayName="Si" sap:VirtualizedContainerService.HintSize="719,528" sap2010:WorkflowViewState.IdRef="If_1">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                             <x:Boolean x:Key="IsPinned">False</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <If.Else>
-                          <Sequence DisplayName="Secuencia" sap:VirtualizedContainerService.HintSize="539,279" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                        <If.Then>
+                          <Sequence DisplayName="Secuencia" sap:VirtualizedContainerService.HintSize="539,380" sap2010:WorkflowViewState.IdRef="Sequence_4">
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <Switch x:TypeArguments="x:String" DisplayName="elije las opciones de paises" Expression="[pais.Substring(pais.LastIndexOf(&quot;\&quot;)+1)]" sap:VirtualizedContainerService.HintSize="497,187" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+                            <Switch x:TypeArguments="x:String" DisplayName="elije las opciones de paises" Expression="[pais.Substring(pais.LastIndexOf(&quot;\&quot;)+1)]" sap:VirtualizedContainerService.HintSize="497,288" sap2010:WorkflowViewState.IdRef="Switch`1_1">
                               <sap:WorkflowViewStateService.ViewState>
                                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -257,43 +262,42 @@
                               </sap:WorkflowViewStateService.ViewState>
                               <Assign x:Key="ni" DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
                                 <Assign.To>
-                                  <OutArgument x:TypeArguments="x:String">[RespaldosPaisesnoEncontrados]</OutArgument>
+                                  <OutArgument x:TypeArguments="x:Int32">[count]</OutArgument>
                                 </Assign.To>
                                 <Assign.Value>
-                                  <InArgument x:TypeArguments="x:String">["Nicaragua"+","+RespaldosPaisesnoEncontrados]</InArgument>
+                                  <InArgument x:TypeArguments="x:Int32">[count+1]</InArgument>
                                 </Assign.Value>
                               </Assign>
-                              <Assign x:Key="es" DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                              <Assign x:Key="es" DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_20">
                                 <Assign.To>
-                                  <OutArgument x:TypeArguments="x:String">[RespaldosPaisesnoEncontrados]</OutArgument>
+                                  <OutArgument x:TypeArguments="x:Int32">[count]</OutArgument>
                                 </Assign.To>
                                 <Assign.Value>
-                                  <InArgument x:TypeArguments="x:String">["El Salvador"+","+RespaldosPaisesnoEncontrados]</InArgument>
+                                  <InArgument x:TypeArguments="x:Int32">[count+1]</InArgument>
                                 </Assign.Value>
                               </Assign>
-                              <Assign x:Key="hn" DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                              <Assign x:Key="hn" DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_21">
                                 <Assign.To>
-                                  <OutArgument x:TypeArguments="x:String">[RespaldosPaisesnoEncontrados]</OutArgument>
+                                  <OutArgument x:TypeArguments="x:Int32">[count]</OutArgument>
                                 </Assign.To>
                                 <Assign.Value>
-                                  <InArgument x:TypeArguments="x:String">["Honduras"+","+RespaldosPaisesnoEncontrados]</InArgument>
+                                  <InArgument x:TypeArguments="x:Int32">[count+1]</InArgument>
                                 </Assign.Value>
                               </Assign>
                             </Switch>
                           </Sequence>
-                        </If.Else>
+                        </If.Then>
                       </If>
                     </Sequence>
-                    <Sequence DisplayName="Verificar archivos con error" sap:VirtualizedContainerService.HintSize="1038,1574" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                    <Sequence DisplayName="Verificar archivos con error" sap:VirtualizedContainerService.HintSize="761,66" sap2010:WorkflowViewState.IdRef="Sequence_7">
                       <Sequence.Variables>
                         <Variable x:TypeArguments="x:Int32" Name="ErroresNicaragua" />
                         <Variable x:TypeArguments="x:Int32" Name="ErroresSalvador" />
                         <Variable x:TypeArguments="x:Int32" Name="ErroresHonduras" />
-                        <Variable x:TypeArguments="x:String" Name="detallesError" />
                       </Sequence.Variables>
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
@@ -305,7 +309,7 @@
                           <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles(pais+r_error,"*"+DateTime.Today.AddDays(-1).ToString("yyyyMMdd")+"*")]</InArgument>
                         </Assign.Value>
                       </Assign>
-                      <If Condition="[VerificarError.Count&gt;0]" DisplayName="Condicion para verificar archivos con error" sap:VirtualizedContainerService.HintSize="996,1382" sap2010:WorkflowViewState.IdRef="If_2">
+                      <If Condition="[VerificarError.Count&gt;0]" DisplayName="Condicion para verificar archivos con error" sap:VirtualizedContainerService.HintSize="996,1276" sap2010:WorkflowViewState.IdRef="If_2">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -313,7 +317,7 @@
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
                         <If.Then>
-                          <Sequence DisplayName="Secuencia" sap:VirtualizedContainerService.HintSize="617,1234" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                          <Sequence DisplayName="Secuencia" sap:VirtualizedContainerService.HintSize="617,1128" sap2010:WorkflowViewState.IdRef="Sequence_20">
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -328,13 +332,13 @@
                                 <InArgument x:TypeArguments="x:Int32">[VerificarError.Count+cantidadError]</InArgument>
                               </Assign.Value>
                             </Assign>
-                            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="Captura datos de la informacion con error" sap:VirtualizedContainerService.HintSize="575,614" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[VerificarError]">
+                            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="Captura datos de la informacion con error" sap:VirtualizedContainerService.HintSize="575,508" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[VerificarError]">
                               <ui:ForEach.Body>
                                 <ActivityAction x:TypeArguments="x:String">
                                   <ActivityAction.Argument>
                                     <DelegateInArgument x:TypeArguments="x:String" Name="item" />
                                   </ActivityAction.Argument>
-                                  <Sequence DisplayName="Cuerpo" sap:VirtualizedContainerService.HintSize="539,480" sap2010:WorkflowViewState.IdRef="Sequence_19">
+                                  <Sequence DisplayName="Cuerpo" sap:VirtualizedContainerService.HintSize="539,374" sap2010:WorkflowViewState.IdRef="Sequence_19">
                                     <sap:WorkflowViewStateService.ViewState>
                                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -348,7 +352,7 @@
                                         <InArgument x:TypeArguments="x:String">[item+Environment.NewLine+InformacionArchivoconError]</InArgument>
                                       </Assign.Value>
                                     </Assign>
-                                    <Switch x:TypeArguments="x:String" DisplayName="Contador de archivo con error por pais" Expression="[pais.Substring(pais.LastIndexOf(&quot;\&quot;)+1)]" sap:VirtualizedContainerService.HintSize="497,288" sap2010:WorkflowViewState.IdRef="Switch`1_3">
+                                    <Switch x:TypeArguments="x:String" DisplayName="Contador de archivo con error por pais" Expression="[pais.Substring(pais.LastIndexOf(&quot;\&quot;)+1)]" sap:VirtualizedContainerService.HintSize="497,182" sap2010:WorkflowViewState.IdRef="Switch`1_3">
                                       <sap:WorkflowViewStateService.ViewState>
                                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -467,13 +471,20 @@
                       <av:Size x:Key="ShapeSize">200,66</av:Size>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <Sequence DisplayName="No hay archivos con error" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                  <Sequence DisplayName="Ejecutar FileZilla" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_12">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" DisplayName="Bandeja de mensajes" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="MessageBox_2" Text="[&quot;probando si va&quot;]" />
+                    <If Condition="[count&gt;0]" DisplayName="Si" sap:VirtualizedContainerService.HintSize="713,208" sap2010:WorkflowViewState.IdRef="If_3">
+                      <If.Then>
+                        <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" DisplayName="Bandeja de mensajes" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="MessageBox_3" Text="[&quot;todo normal&quot;]" />
+                      </If.Then>
+                      <If.Else>
+                        <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" DisplayName="Bandeja de mensajes" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="MessageBox_4" Text="[&quot;No se han encontrados los archivos procesados por el convertidor &quot;]" />
+                      </If.Else>
+                    </If>
                   </Sequence>
                 </FlowStep>
               </FlowDecision.True>
@@ -491,24 +502,57 @@
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <Sequence DisplayName="Secuencia" sap:VirtualizedContainerService.HintSize="376,815" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                    <Sequence DisplayName="Secuencia" sap:VirtualizedContainerService.HintSize="376,936" sap2010:WorkflowViewState.IdRef="Sequence_22">
                       <Sequence.Variables>
                         <Variable x:TypeArguments="x:String" Name="NombreArchivo" />
+                        <Variable x:TypeArguments="x:String" Name="RutaCarpetaError" />
                       </Sequence.Variables>
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <ui:CommentOut DisplayName="Comentar" sap:VirtualizedContainerService.HintSize="334,52" sap2010:WorkflowViewState.IdRef="CommentOut_2">
+                      <ui:Comment DisplayName="Comentario" sap:VirtualizedContainerService.HintSize="334,55" sap2010:WorkflowViewState.IdRef="Comment_4" Text="// Se tendra que modificar las ruta luego&#xA;" />
+                      <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+                        <ui:MultipleAssign.AssignOperations>
+                          <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+                              <ui:AssignOperation.To>
+                                <OutArgument x:TypeArguments="x:String">[NombreArchivo]</OutArgument>
+                              </ui:AssignOperation.To>
+                              <ui:AssignOperation.Value>
+                                <InArgument x:TypeArguments="x:String">["DetallesErrores_"+DateTime.Today.AddDays(-1).ToString("dd-MM-yyyy")+".txt"]</InArgument>
+                              </ui:AssignOperation.Value>
+                            </ui:AssignOperation>
+                            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+                              <ui:AssignOperation.To>
+                                <OutArgument x:TypeArguments="x:String">[RutaCarpetaError]</OutArgument>
+                              </ui:AssignOperation.To>
+                              <ui:AssignOperation.Value>
+                                <InArgument x:TypeArguments="x:String">C:\Users\DV7917NI\Documents\UiPath\SAPV_SV_HN_NC\InformacionErrores</InArgument>
+                              </ui:AssignOperation.Value>
+                            </ui:AssignOperation>
+                          </scg:List>
+                        </ui:MultipleAssign.AssignOperations>
+                      </ui:MultipleAssign>
+                      <ui:CreateFile ContinueOnError="{x:Null}" DisplayName="Crear archivo-MD" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="CreateFile_1" Name="[NombreArchivo]" Path="[RutaCarpetaError]" />
+                      <ui:WriteTextFile DisplayName="Escribir archivo de texto-MD" FileName="[RutaCarpetaError+&quot;\&quot;+NombreArchivo]" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[&quot;Archivos con error: &quot;+cantidadError.ToString+Environment.NewLine+ &quot;Archivos con error para cada pais: &quot;+ListaArchivoConError+ Environment.NewLine +&quot;Ruta de Archivos: &quot;+Environment.NewLine+InformacionArchivoconError]" />
+                      <ui:SendMail Bcc="{x:Null}" Cc="{x:Null}" From="{x:Null}" MailMessage="{x:Null}" Name="{x:Null}" SecurePassword="{x:Null}" TimeoutMS="{x:Null}" Body="En el siguiente documento adjunto se detalla la informacion de la cantidad de archivos con error y la ruta de dicho docuemnto" DisplayName="Enviar mensaje de correo SMTP" Email="desarrollorpa277@gmail.com" EnableSSL="True" sap:VirtualizedContainerService.HintSize="334,145" sap2010:WorkflowViewState.IdRef="SendMail_1" IsBodyHtml="False" Password="prueba123" Port="465" SecureConnection="Auto" Server="smtp.gmail.com" Subject="Informacion IDOCS SAPV con error" To="douglas.vargas@grupomonge.com">
+                        <ui:SendMail.Files>
+                          <scg:List x:TypeArguments="InArgument(x:String)" Capacity="4">
+                            <InArgument x:TypeArguments="x:String">[RutaCarpetaError+"\"+NombreArchivo]</InArgument>
+                          </scg:List>
+                        </ui:SendMail.Files>
+                      </ui:SendMail>
+                      <ui:CommentOut DisplayName="Comentar" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_1">
                         <ui:CommentOut.Body>
-                          <Sequence DisplayName="Actividades ignoradas" sap:VirtualizedContainerService.HintSize="376,151" sap2010:WorkflowViewState.IdRef="Sequence_21">
+                          <Sequence DisplayName="Actividades ignoradas" sap:VirtualizedContainerService.HintSize="376,179" sap2010:WorkflowViewState.IdRef="Sequence_23">
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" DisplayName="Bandeja de mensajes" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="MessageBox_4" Text="[&quot;Se encontraron archivos con errores en la siguientes ruta: &quot;+Environment.NewLine+ archivosConErrorEcontrados+Environment.NewLine+&quot;Nota: el flujo se dentendra por lo que tendra que realizar los pasos siguientes manualmente&quot;]" />
+                            <ui:StartProcess Arguments="{x:Null}" WorkingDirectory="{x:Null}" DisplayName="Iniciar proceso-MD" FileName="[RutaCarpetaError+&quot;\&quot;+NombreArchivo]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="StartProcess_1" />
                           </Sequence>
                         </ui:CommentOut.Body>
                         <sap:WorkflowViewStateService.ViewState>
@@ -518,18 +562,6 @@
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
                       </ui:CommentOut>
-                      <Assign DisplayName="Asignar" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_20">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:String">[NombreArchivo]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:String">["DetallesErrores_"+DateTime.Today.AddDays(-1).ToString("dd-MM-yyyy")+".txt"]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <ui:Comment DisplayName="Comentario" sap:VirtualizedContainerService.HintSize="334,56" sap2010:WorkflowViewState.IdRef="Comment_4" Text="// Se tendra que modificar las ruta luego&#xA;" />
-                      <ui:CreateFile ContinueOnError="{x:Null}" DisplayName="Crear archivo-MD" sap:VirtualizedContainerService.HintSize="334,134" sap2010:WorkflowViewState.IdRef="CreateFile_1" Name="[NombreArchivo]" Path="C:\Users\DV7917NI\Documents\UiPath\SAPV_SV_HN_NC_10-3\InformacionErrores" />
-                      <ui:WriteTextFile DisplayName="Escribir archivo de texto-MD" FileName="[&quot;C:\Users\DV7917NI\Documents\UiPath\SAPV_SV_HN_NC_10-3\InformacionErrores&quot;+NombreArchivo]" sap:VirtualizedContainerService.HintSize="334,134" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[&quot;Archivos con error: &quot;+cantidadError.ToString+Environment.NewLine+ &quot;Archivos con error para cada pais: &quot;+ListaArchivoConError+ Environment.NewLine +&quot;Ruta de Archivos: &quot;+Environment.NewLine+InformacionArchivoconError]" />
-                      <ui:StartProcess Arguments="{x:Null}" WorkingDirectory="{x:Null}" DisplayName="Iniciar proceso-MD" FileName="[&quot;C:\Users\DV7917NI\Documents\UiPath\SAPV_SV_HN_NC_10-3\InformacionErrores&quot;+NombreArchivo]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="StartProcess_1" />
                     </Sequence>
                   </Sequence>
                 </FlowStep>
@@ -606,37 +638,56 @@
     <FlowStep>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">300,107</av:Point>
+          <av:Point x:Key="ShapeLocation">290,127</av:Point>
           <av:Size x:Key="ShapeSize">200,66</av:Size>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <Sequence DisplayName="Ejecutar script de reporte" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_15">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="x:String" Name="script" />
+        </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+        <ui:DatabaseConnect DatabaseConnection="{x:Null}" DisplayName="Connect" sap:VirtualizedContainerService.HintSize="384,59" sap2010:WorkflowViewState.IdRef="DatabaseConnect_1" />
+        <ui:ReadTextFile FileName="{x:Null}" Content="[script]" DisplayName="Leer archivo de texto" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+        <ui:ExecuteQuery ContinueOnError="{x:Null}" DataTable="{x:Null}" ExistingDbConnection="{x:Null}" TimeoutMS="{x:Null}" CommandType="Text" DisplayName="Execute Query" sap:VirtualizedContainerService.HintSize="384,88" sap2010:WorkflowViewState.IdRef="ExecuteQuery_1" Sql="[script]">
+          <ui:ExecuteQuery.Parameters>
+            <scg:Dictionary x:TypeArguments="x:String, Argument" />
+          </ui:ExecuteQuery.Parameters>
+        </ui:ExecuteQuery>
+        <ui:DatabaseDisconnect DatabaseConnection="{x:Null}" DisplayName="Disconnect" sap:VirtualizedContainerService.HintSize="384,22" sap2010:WorkflowViewState.IdRef="DatabaseDisconnect_1" />
       </Sequence>
     </FlowStep>
     <FlowStep>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">200,187</av:Point>
+          <av:Point x:Key="ShapeLocation">290,217</av:Point>
           <av:Size x:Key="ShapeSize">200,66</av:Size>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Sequence DisplayName="Ejecutar script de verificacion de tiendas faltantes" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_16">
+      <Sequence DisplayName="Ejecutar script de verificacion de tiendas faltantes" sap:VirtualizedContainerService.HintSize="426,460" sap2010:WorkflowViewState.IdRef="Sequence_16">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+        <ui:DatabaseConnect DatabaseConnection="{x:Null}" DisplayName="Connect" sap:VirtualizedContainerService.HintSize="384,59" sap2010:WorkflowViewState.IdRef="DatabaseConnect_2" />
+        <ui:ReadTextFile FileName="{x:Null}" Content="[script]" DisplayName="Leer archivo de texto" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_2" />
+        <ui:ExecuteQuery ContinueOnError="{x:Null}" DataTable="{x:Null}" ExistingDbConnection="{x:Null}" TimeoutMS="{x:Null}" CommandType="Text" DisplayName="Execute Query" sap:VirtualizedContainerService.HintSize="384,88" sap2010:WorkflowViewState.IdRef="ExecuteQuery_2" Sql="[script]">
+          <ui:ExecuteQuery.Parameters>
+            <scg:Dictionary x:TypeArguments="x:String, Argument" />
+          </ui:ExecuteQuery.Parameters>
+        </ui:ExecuteQuery>
+        <ui:DatabaseDisconnect DatabaseConnection="{x:Null}" DisplayName="Disconnect" sap:VirtualizedContainerService.HintSize="384,22" sap2010:WorkflowViewState.IdRef="DatabaseDisconnect_2" />
       </Sequence>
     </FlowStep>
     <FlowStep>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">200,277</av:Point>
+          <av:Point x:Key="ShapeLocation">300,307</av:Point>
           <av:Size x:Key="ShapeSize">200,66</av:Size>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>

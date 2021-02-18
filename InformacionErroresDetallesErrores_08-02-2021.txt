@@ -1,0 +1,6 @@
+Archivos con error: 3
+Archivos con error para cada pais: 1 El Salvador
+Ruta de Archivos: 
+C:\10.1.1.126\es\Errores\WUPF_C700_20210208_1_SAP.txt
+C:\10.1.1.126\ni\Errores\WUPF_C700_20210208_1_SAP - copia (2).txt
+C:\10.1.1.126\ni\Errores\WUPF_C700_20210208_1_SAP - copia (2) - copia.txt

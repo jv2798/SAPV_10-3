@@ -1,0 +1,4 @@
+Archivos con error: 1
+Archivos con error para cada pais: 1 Honduras
+Ruta de Archivos: 
+C:\10.1.1.126\hn\Errores\WUPF_C700_20210207_1_SAP.txt
