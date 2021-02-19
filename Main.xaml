@@ -638,50 +638,66 @@
     <FlowStep>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">290,127</av:Point>
+          <av:Point x:Key="ShapeLocation">290,217</av:Point>
           <av:Size x:Key="ShapeSize">200,66</av:Size>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Sequence DisplayName="Ejecutar script de reporte" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_15">
+      <Sequence DisplayName="Ejecutar envio de correos" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_16">
         <Sequence.Variables>
-          <Variable x:TypeArguments="x:String" Name="script" />
+          <Variable x:TypeArguments="x:String" Name="RutaScript_DEV" />
+          <Variable x:TypeArguments="s:String[]" Name="contadorArray" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:DatabaseConnect DatabaseConnection="{x:Null}" DisplayName="Connect" sap:VirtualizedContainerService.HintSize="384,59" sap2010:WorkflowViewState.IdRef="DatabaseConnect_1" />
-        <ui:ReadTextFile FileName="{x:Null}" Content="[script]" DisplayName="Leer archivo de texto" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-        <ui:ExecuteQuery ContinueOnError="{x:Null}" DataTable="{x:Null}" ExistingDbConnection="{x:Null}" TimeoutMS="{x:Null}" CommandType="Text" DisplayName="Execute Query" sap:VirtualizedContainerService.HintSize="384,88" sap2010:WorkflowViewState.IdRef="ExecuteQuery_1" Sql="[script]">
-          <ui:ExecuteQuery.Parameters>
-            <scg:Dictionary x:TypeArguments="x:String, Argument" />
-          </ui:ExecuteQuery.Parameters>
-        </ui:ExecuteQuery>
-        <ui:DatabaseDisconnect DatabaseConnection="{x:Null}" DisplayName="Disconnect" sap:VirtualizedContainerService.HintSize="384,22" sap2010:WorkflowViewState.IdRef="DatabaseDisconnect_1" />
-      </Sequence>
-    </FlowStep>
-    <FlowStep>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">290,217</av:Point>
-          <av:Size x:Key="ShapeSize">200,66</av:Size>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <Sequence DisplayName="Ejecutar script de verificacion de tiendas faltantes" sap:VirtualizedContainerService.HintSize="426,460" sap2010:WorkflowViewState.IdRef="Sequence_16">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <ui:DatabaseConnect DatabaseConnection="{x:Null}" DisplayName="Connect" sap:VirtualizedContainerService.HintSize="384,59" sap2010:WorkflowViewState.IdRef="DatabaseConnect_2" />
-        <ui:ReadTextFile FileName="{x:Null}" Content="[script]" DisplayName="Leer archivo de texto" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_2" />
-        <ui:ExecuteQuery ContinueOnError="{x:Null}" DataTable="{x:Null}" ExistingDbConnection="{x:Null}" TimeoutMS="{x:Null}" CommandType="Text" DisplayName="Execute Query" sap:VirtualizedContainerService.HintSize="384,88" sap2010:WorkflowViewState.IdRef="ExecuteQuery_2" Sql="[script]">
-          <ui:ExecuteQuery.Parameters>
-            <scg:Dictionary x:TypeArguments="x:String, Argument" />
-          </ui:ExecuteQuery.Parameters>
-        </ui:ExecuteQuery>
-        <ui:DatabaseDisconnect DatabaseConnection="{x:Null}" DisplayName="Disconnect" sap:VirtualizedContainerService.HintSize="384,22" sap2010:WorkflowViewState.IdRef="DatabaseDisconnect_2" />
+        <ui:DatabaseConnect DatabaseConnection="{x:Null}" DisplayName="Connect" sap:VirtualizedContainerService.HintSize="462,59" sap2010:WorkflowViewState.IdRef="DatabaseConnect_2" />
+        <ui:MultipleAssign DisplayName="Asignación múltiple" sap:VirtualizedContainerService.HintSize="462,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_3">
+          <ui:MultipleAssign.AssignOperations>
+            <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="x:String">[RutaScript_DEV]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="x:String">C:\Users\DV7917NI\Documents\UiPath\SAPV_SV_HN_NC_10-3\Script\Correos\</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="s:String[]">[contadorArray]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="s:String[]">[{"Enviar correo de cierre de tiendas NI (1).sql","Enviar correo de cierre de tiendas HN (1).sql","Enviar correo de cierre de tiendas SV (1).sql"}]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+            </scg:List>
+          </ui:MultipleAssign.AssignOperations>
+        </ui:MultipleAssign>
+        <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="Para cada" sap:VirtualizedContainerService.HintSize="462,433" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[contadorArray]">
+          <ui:ForEach.Body>
+            <ActivityAction x:TypeArguments="x:Object">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Cuerpo" sap:VirtualizedContainerService.HintSize="426,299" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:ReadTextFile Content="[script]" DisplayName="Leer archivo de texto" FileName="[RutaScript_DEV+item]" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_2" />
+                <ui:ExecuteQuery ContinueOnError="{x:Null}" DataTable="{x:Null}" ExistingDbConnection="{x:Null}" TimeoutMS="{x:Null}" CommandType="Text" DisplayName="Execute Query" sap:VirtualizedContainerService.HintSize="384,88" sap2010:WorkflowViewState.IdRef="ExecuteQuery_2" Sql="[script]">
+                  <ui:ExecuteQuery.Parameters>
+                    <scg:Dictionary x:TypeArguments="x:String, Argument" />
+                  </ui:ExecuteQuery.Parameters>
+                </ui:ExecuteQuery>
+              </Sequence>
+            </ActivityAction>
+          </ui:ForEach.Body>
+        </ui:ForEach>
+        <ui:DatabaseDisconnect DatabaseConnection="{x:Null}" DisplayName="Disconnect" sap:VirtualizedContainerService.HintSize="462,22" sap2010:WorkflowViewState.IdRef="DatabaseDisconnect_2" />
       </Sequence>
     </FlowStep>
     <FlowStep>
@@ -697,6 +713,71 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+      </Sequence>
+    </FlowStep>
+    <FlowStep>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <av:Point x:Key="ShapeLocation">290,127</av:Point>
+          <av:Size x:Key="ShapeSize">200,66</av:Size>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Sequence DisplayName="Ejecutar script de verificacion de tiendas faltantes" sap:VirtualizedContainerService.HintSize="504,855" sap2010:WorkflowViewState.IdRef="Sequence_26">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="x:String" Name="RutaScript_DEV" />
+          <Variable x:TypeArguments="s:String[]" Name="contadorArray" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:DatabaseConnect DatabaseConnection="{x:Null}" DisplayName="Connect" sap:VirtualizedContainerService.HintSize="462,59" sap2010:WorkflowViewState.IdRef="DatabaseConnect_3" />
+        <ui:MultipleAssign DisplayName="Asignación múltiple" sap:VirtualizedContainerService.HintSize="462,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_4">
+          <ui:MultipleAssign.AssignOperations>
+            <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="x:String">[RutaScript_DEV]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="x:String">C:\Users\DV7917NI\Documents\UiPath\SAPV_SV_HN_NC_10-3\Script\Verificacion\</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_9">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="s:String[]">[contadorArray]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="s:String[]">[{"pendiente cierre NI-New (1).sql","pendiente cierre HND-New (1).sql","pendiente cierre SV-New (1).sql"}]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+            </scg:List>
+          </ui:MultipleAssign.AssignOperations>
+        </ui:MultipleAssign>
+        <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="Para cada" sap:VirtualizedContainerService.HintSize="462,433" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[contadorArray]">
+          <ui:ForEach.Body>
+            <ActivityAction x:TypeArguments="x:Object">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Cuerpo" sap:VirtualizedContainerService.HintSize="426,299" sap2010:WorkflowViewState.IdRef="Sequence_25">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:ReadTextFile Content="[script]" DisplayName="Leer archivo de texto" FileName="[RutaScript_DEV+item]" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_3" />
+                <ui:ExecuteQuery ContinueOnError="{x:Null}" DataTable="{x:Null}" ExistingDbConnection="{x:Null}" TimeoutMS="{x:Null}" CommandType="Text" DisplayName="Execute Query" sap:VirtualizedContainerService.HintSize="384,88" sap2010:WorkflowViewState.IdRef="ExecuteQuery_3" Sql="[script]">
+                  <ui:ExecuteQuery.Parameters>
+                    <scg:Dictionary x:TypeArguments="x:String, Argument" />
+                  </ui:ExecuteQuery.Parameters>
+                </ui:ExecuteQuery>
+              </Sequence>
+            </ActivityAction>
+          </ui:ForEach.Body>
+        </ui:ForEach>
+        <ui:DatabaseDisconnect DatabaseConnection="{x:Null}" DisplayName="Disconnect" sap:VirtualizedContainerService.HintSize="462,22" sap2010:WorkflowViewState.IdRef="DatabaseDisconnect_3" />
       </Sequence>
     </FlowStep>
   </Flowchart>
